@@ -13,9 +13,7 @@ model customer {
   cnpj             String               @db.VarChar(14)
   responsible_id   Int
   created_at       DateTime             @default(dbgenerated("(now())")) @db.Timestamp(0)
-  created_by       Int
   updated_at       DateTime             @default(dbgenerated("(now())")) @db.Timestamp(0)
-  updated_by       Int
   responsible      customer_responsible @relation(fields: [responsible_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_customer_customer_responsible_model")
   customer_plan    customer_plan[]
   customer_message customer_message[]
@@ -29,23 +27,19 @@ model customer_responsible {
   email      String   @db.VarChar(100)
   cpf        String   @db.VarChar(11)
   cellphone  String   @db.VarChar(11)
-  created_at DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
-  created_by Int
-  updated_at DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
-  updated_by Int
 
   customer customer[]
 }
 
 model customer_plan {
-  id          Int      @id @default(autoincrement())
-  customer_id Int
-  credit      Decimal  @db.Decimal(10, 2)
-  created_at  DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
-  created_by  Int
-  updated_at  DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
-  updated_by  Int
-  customer    customer @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_customer_plan_customer_model")
+  id            Int      @id @default(autoincrement())
+  customer_id   Int
+  credit        Decimal  @db.Decimal(10, 2)
+  spent_limit   Decimal  @db.Decimal(10, 2)
+  account_limit Decimal  @db.Decimal(10, 2)
+  created_at    DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
+  updated_at    DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
+  customer      customer @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_customer_plan_customer_model")
 
   @@index([customer_id], map: "fk_customer_plan_customer")
 }
@@ -56,9 +50,7 @@ model customer_message {
   text        String   @db.Text
   value       Decimal  @db.Decimal(4, 2)
   created_at  DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
-  created_by  Int
   updated_at  DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
-  updated_by  Int
   customer    customer @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_customer_message_customer_model")
 
   @@index([customer_id], map: "fk_customer_message_customer")
