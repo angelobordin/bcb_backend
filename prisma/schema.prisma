@@ -6,3 +6,66 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model customer {
+  id               Int                  @id @default(autoincrement())
+  name             String               @db.VarChar(100)
+  cnpj             String               @db.VarChar(14)
+  responsible_id   Int
+  created_at       DateTime             @default(dbgenerated("(now())")) @db.Timestamp(0)
+  created_by       Int
+  updated_at       DateTime             @default(dbgenerated("(now())")) @db.Timestamp(0)
+  updated_by       Int
+  responsible      customer_responsible @relation(fields: [responsible_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_customer_customer_responsible_model")
+  customer_plan    customer_plan[]
+  customer_message customer_message[]
+
+  @@index([responsible_id], map: "fk_customer_customer_responsible")
+}
+
+model customer_responsible {
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(100)
+  email      String   @db.VarChar(100)
+  cpf        String   @db.VarChar(11)
+  cellphone  String   @db.VarChar(11)
+  created_at DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
+  created_by Int
+  updated_at DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
+  updated_by Int
+
+  customer customer[]
+}
+
+model customer_plan {
+  id          Int      @id @default(autoincrement())
+  customer_id Int
+  credit      Decimal  @db.Decimal(10, 2)
+  created_at  DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
+  created_by  Int
+  updated_at  DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
+  updated_by  Int
+  customer    customer @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_customer_plan_customer_model")
+
+  @@index([customer_id], map: "fk_customer_plan_customer")
+}
+
+model customer_message {
+  id          Int      @id @default(autoincrement())
+  customer_id Int
+  text        String   @db.Text
+  value       Decimal  @db.Decimal(4, 2)
+  created_at  DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
+  created_by  Int
+  updated_at  DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
+  updated_by  Int
+  customer    customer @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_customer_message_customer_model")
+
+  @@index([customer_id], map: "fk_customer_message_customer")
+}
+
+model user_number {
+  id        Int     @id @default(autoincrement())
+  cellphone String  @db.VarChar(11)
+  whatsapp  Boolean
+}
