@@ -34,9 +34,10 @@ model customer_responsible {
 model customer_plan {
   id            Int      @id @default(autoincrement())
   customer_id   Int
-  credit        Decimal  @db.Decimal(10, 2)
-  spent_limit   Decimal  @db.Decimal(10, 2)
-  account_limit Decimal  @db.Decimal(10, 2)
+  plan_type     plan_type
+  credit        Decimal?  @db.Decimal(10, 2)
+  spent_limit   Decimal?  @db.Decimal(10, 2)
+  account_limit Decimal?  @db.Decimal(10, 2)
   created_at    DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
   updated_at    DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
   customer      customer @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_customer_plan_customer_model")
@@ -60,4 +61,9 @@ model user_number {
   id        Int     @id @default(autoincrement())
   cellphone String  @db.VarChar(11)
   whatsapp  Boolean
+}
+
+enum plan_type {
+  PREPAID
+  POSTPAID
 }
