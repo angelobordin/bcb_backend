@@ -1,32 +1,69 @@
-import { CreateCustomerDto } from '../dto/create-customer.dto';
-import { PrismaService } from './../../../database/prisma.service';
-import { Injectable } from '@nestjs/common';
+import { CreateCustomerDto } from "../dto/create-customer.dto";
+import { UpdateCustomerDto } from "../dto/update-customer.dto";
+import { PrismaService } from "./../../../database/prisma.service";
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class CustomerRepository {
-    async registerCustomer(prismaService: PrismaService, newCustomer: CreateCustomerDto) {
-        try {
-            const result = await prismaService.customer.create({
-                data: {
-                    name: newCustomer.name,
-                    cnpj: newCustomer.cnpj,
-                    responsible: { 
-                        create: {
-                            name: newCustomer.responsible_name,
-                            email: newCustomer.responsible_email,
-                            cpf: newCustomer.responsible_cpf,
-                            cellphone: newCustomer.responsible_cellphone,
-                        }
-                    }
-                },
-                include: {
-                    responsible: true
-                }
-            });
+	async getCustomerById(prismaService: PrismaService, customerId: string) {
+		try {
+			const result = await prismaService.customer.findFirst({
+				where: { id: parseInt(customerId) },
+			});
 
-            return result;
-        } catch (error) {
-            throw error;
-        }
-    }
+			return result;
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	async getCustomerList(prismaService: PrismaService) {
+		try {
+			const result = await prismaService.customer.findMany({});
+
+			return result;
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	async updateCustomer(prismaService: PrismaService, customerId: string, newData: UpdateCustomerDto) {
+		try {
+			const result = await prismaService.customer.update({
+				where: { id: parseInt(customerId) },
+				data: {
+					...newData,
+					updated_at: new Date(Date.now()),
+				},
+			});
+
+			return result;
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	async registerCustomer(prismaService: PrismaService, newCustomer: CreateCustomerDto) {
+		try {
+			const result = await prismaService.customer.create({
+				data: newCustomer,
+			});
+
+			return result;
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	async deleteCustomer(prismaService: PrismaService, customerId: string) {
+		try {
+			const result = await prismaService.customer.deleteMany({
+				where: { id: parseInt(customerId) },
+			});
+
+			return result;
+		} catch (error) {
+			throw error;
+		}
+	}
 }
