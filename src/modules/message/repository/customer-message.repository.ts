@@ -21,7 +21,7 @@ export class CustomerMessageRepository {
 				data: {
 					text: newMessage.text,
 					value: newMessage.value,
-					customer: { connect: { id: parseInt(newMessage.customer_id) } },
+					customer: { connect: { id: newMessage.customer_id } },
 					updated_at: new Date(Date.now()),
 					created_at: new Date(Date.now()),
 				},
@@ -29,14 +29,15 @@ export class CustomerMessageRepository {
 
 			return result;
 		} catch (error) {
+			console.log(error);
 			throw error;
 		}
 	}
 
-	async updateMessage(prismaService: PrismaService, messageId: string, newData: UpdateMessageDto) {
+	async updateMessage(prismaService: PrismaService, messageId: number, newData: UpdateMessageDto) {
 		try {
 			const result = await prismaService.customer_message.update({
-				where: { id: parseInt(messageId) },
+				where: { id: messageId },
 				data: {
 					text: newData.text,
 					value: newData.value,
@@ -48,10 +49,10 @@ export class CustomerMessageRepository {
 		}
 	}
 
-	async deleteMessageByCustomerId(prismaService: PrismaService, customerId: string) {
+	async deleteMessageByCustomerId(prismaService: PrismaService, customerId: number) {
 		try {
 			const result = await prismaService.customer_message.deleteMany({
-				where: { customer_id: parseInt(customerId) },
+				where: { customer_id: customerId },
 			});
 
 			return result;
@@ -60,10 +61,10 @@ export class CustomerMessageRepository {
 		}
 	}
 
-	async deleteMessage(prismaService: PrismaService, messageId: string) {
+	async deleteMessage(prismaService: PrismaService, messageId: number) {
 		try {
 			const result = await prismaService.customer_message.delete({
-				where: { id: parseInt(messageId) },
+				where: { id: messageId },
 			});
 
 			return result;

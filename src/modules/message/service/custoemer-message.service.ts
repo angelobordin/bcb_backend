@@ -40,7 +40,7 @@ export class CustomerMessageService {
 		}
 	}
 
-	async updateMessage(messageId: string, newData: UpdateMessageDto) {
+	async updateMessage(messageId: number, newData: UpdateMessageDto) {
 		try {
 			const result = await this.repository.updateMessage(this.prismaService, messageId, newData);
 
@@ -54,7 +54,7 @@ export class CustomerMessageService {
 		}
 	}
 
-	async deleteMessagesByCustomerId(customerId: string) {
+	async deleteMessagesByCustomerId(customerId: number) {
 		try {
 			const result = await this.repository.deleteMessageByCustomerId(this.prismaService, customerId);
 
@@ -68,7 +68,7 @@ export class CustomerMessageService {
 		}
 	}
 
-	async deleteMessage(messageId: string) {
+	async deleteMessage(messageId: number) {
 		try {
 			const result = await this.repository.deleteMessage(this.prismaService, messageId);
 

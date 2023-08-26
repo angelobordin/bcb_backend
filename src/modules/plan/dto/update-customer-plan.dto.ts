@@ -16,11 +16,11 @@ export class UpdateCustomerPlanDto {
 	plan_type: string;
 
 	@MaxLength(10)
-	credit: string;
+	credit: number;
 
 	@MaxLength(10)
-	spend_limit: string;
+	spend_limit: number;
 
 	@MaxLength(10)
-	account_limit: string;
+	account_limit: number;
 }

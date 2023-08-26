@@ -8,5 +8,5 @@ export class UpdateMessageDto {
 	text: string;
 
 	@IsNotEmpty()
-	value: string;
+	value: number;
 }

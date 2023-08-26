@@ -49,7 +49,7 @@ export class CustomerPlanController {
 	async updateCredit(@Param() params: UpdateCreditParamsDto, @Body() body: UpdateCreditDto) {
 		try {
 			const planId = parseInt(params.id);
-			const newCredit = body.credit;
+			const newCredit = parseInt(body.credit);
 			const result = await this.service.updateCredit(planId, newCredit);
 
 			return result;
@@ -74,7 +74,7 @@ export class CustomerPlanController {
 	@Delete(":id")
 	async deletePlan(@Param() params: DeletePlanParamDto) {
 		try {
-			const planId = params.id;
+			const planId = parseInt(params.id);
 			const result = await this.service.deletePlan(planId);
 
 			return result;

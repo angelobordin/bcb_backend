@@ -53,7 +53,7 @@ export class CustomerPlanService {
 		}
 	}
 
-	async updateCredit(planId: number, newCredit: string) {
+	async updateCredit(planId: number, newCredit: number) {
 		try {
 			const result = await this.repository.updatedCredit(this.prismaService, planId, newCredit);
 
@@ -81,7 +81,7 @@ export class CustomerPlanService {
 		}
 	}
 
-	async deletelanByCustomerId(customerId: string) {
+	async deletelanByCustomerId(customerId: number) {
 		try {
 			const result = await this.repository.deleteCustomerPlan(this.prismaService, customerId);
 
@@ -95,7 +95,7 @@ export class CustomerPlanService {
 		}
 	}
 
-	async deletePlan(planId: string) {
+	async deletePlan(planId: number) {
 		try {
 			const result = await this.repository.deletePlan(this.prismaService, planId);
 

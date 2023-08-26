@@ -4,7 +4,7 @@ import { RegisterMessageDto } from "../dto/register-message.dto";
 import { UpdateMessageDto, UpdateMessageParamDto } from "../dto/update-message.dto";
 import { DeleteMessageParamDto } from "../dto/delete-message.dto";
 
-@Controller("/message")
+@Controller("message")
 export class CustomerMessageController {
 	constructor(private service: CustomerMessageService) {}
 
@@ -34,7 +34,7 @@ export class CustomerMessageController {
 	@Put(":id")
 	async updateMessage(@Param() params: UpdateMessageParamDto, @Body() body: UpdateMessageDto) {
 		try {
-			const messageId = params.id;
+			const messageId = parseInt(params.id);
 			const newData = body;
 			const result = await this.service.updateMessage(messageId, newData);
 
@@ -47,7 +47,7 @@ export class CustomerMessageController {
 	@Delete(":id")
 	async deleteMessage(@Param() params: DeleteMessageParamDto) {
 		try {
-			const messageId = params.id;
+			const messageId = parseInt(params.id);
 			const result = await this.service.deleteMessage(messageId);
 
 			return result;

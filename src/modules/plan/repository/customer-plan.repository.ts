@@ -47,7 +47,7 @@ export class CustomerPlanRepository {
 		}
 	}
 
-	async updatedCredit(prismaService: PrismaService, planId: number, newCredit: string) {
+	async updatedCredit(prismaService: PrismaService, planId: number, newCredit: number) {
 		try {
 			const result = await prismaService.customer_plan.update({
 				where: { id: planId },
@@ -81,10 +81,10 @@ export class CustomerPlanRepository {
 		}
 	}
 
-	async deleteCustomerPlan(prismaService: PrismaService, customerId: string) {
+	async deleteCustomerPlan(prismaService: PrismaService, customerId: number) {
 		try {
 			const result = await prismaService.customer_plan.deleteMany({
-				where: { customer_id: parseInt(customerId) },
+				where: { customer_id: customerId },
 			});
 
 			return result;
@@ -93,10 +93,10 @@ export class CustomerPlanRepository {
 		}
 	}
 
-	async deletePlan(prismaService: PrismaService, planId: string) {
+	async deletePlan(prismaService: PrismaService, planId: number) {
 		try {
 			const result = await prismaService.customer_plan.delete({
-				where: { id: parseInt(planId) },
+				where: { id: planId },
 			});
 
 			return result;
