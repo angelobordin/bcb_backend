@@ -8,39 +8,29 @@ datasource db {
 }
 
 model customer {
-  id               Int                  @id @default(autoincrement())
-  name             String               @db.VarChar(100)
-  cnpj             String               @db.VarChar(14)
-  responsible_id   Int
-  created_at       DateTime             @default(dbgenerated("(now())")) @db.Timestamp(0)
-  updated_at       DateTime             @default(dbgenerated("(now())")) @db.Timestamp(0)
-  responsible      customer_responsible @relation(fields: [responsible_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_customer_customer_responsible_model")
-  customer_plan    customer_plan[]
-  customer_message customer_message[]
-
-  @@index([responsible_id], map: "fk_customer_customer_responsible")
-}
-
-model customer_responsible {
-  id         Int      @id @default(autoincrement())
-  name       String   @db.VarChar(100)
-  email      String   @db.VarChar(100)
-  cpf        String   @db.VarChar(11)
-  cellphone  String   @db.VarChar(11)
-
-  customer customer[]
+  id                    Int                @id @default(autoincrement())
+  name                  String             @db.VarChar(100)
+  cnpj                  String             @db.VarChar(14)
+  responsible_name      String             @db.VarChar(100)
+  responsible_email     String             @db.VarChar(100)
+  responsible_cpf       String             @db.VarChar(11)
+  responsible_cellphone String             @db.VarChar(11)
+  created_at            DateTime           @default(dbgenerated("(now())")) @db.Timestamp(0)
+  updated_at            DateTime           @default(dbgenerated("(now())")) @db.Timestamp(0)
+  customer_plan         customer_plan[]
+  customer_message      customer_message[]
 }
 
 model customer_plan {
-  id            Int      @id @default(autoincrement())
-  customer_id   Int
+  id            Int       @id @default(autoincrement())
+  customer_id   Int       @unique
   plan_type     plan_type
   credit        Decimal?  @db.Decimal(10, 2)
   spent_limit   Decimal?  @db.Decimal(10, 2)
   account_limit Decimal?  @db.Decimal(10, 2)
-  created_at    DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
-  updated_at    DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
-  customer      customer @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_customer_plan_customer_model")
+  created_at    DateTime  @default(dbgenerated("(now())")) @db.Timestamp(0)
+  updated_at    DateTime  @default(dbgenerated("(now())")) @db.Timestamp(0)
+  customer      customer  @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_customer_plan_customer_model")
 
   @@index([customer_id], map: "fk_customer_plan_customer")
 }
