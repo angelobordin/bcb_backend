@@ -7,9 +7,19 @@ import { UpdateCustomerPlanDto } from "../dto/update-customer-plan.dto";
 
 @Injectable()
 export class CustomerPlanRepository {
-	async getPlanByCustomerId(prismaService: PrismaService, customerId: number): Promise<customer_plan[]> {
+	async getPlanList(prismaService: PrismaService) {
 		try {
-			const result = await prismaService.customer_plan.findMany({
+			const result = await prismaService.customer_plan.findMany();
+
+			return result;
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	async getPlanByCustomerId(prismaService: PrismaService, customerId: number) {
+		try {
+			const result = await prismaService.customer_plan.findFirst({
 				where: { customer_id: customerId },
 			});
 
@@ -52,10 +62,10 @@ export class CustomerPlanRepository {
 		}
 	}
 
-	async updateCustomerPlan(prismaService: PrismaService, planId: number, newPlanData: UpdateCustomerPlanDto) {
+	async updatePlanByCustomerId(prismaService: PrismaService, customerId: number, newPlanData: UpdateCustomerPlanDto) {
 		try {
 			const result = await prismaService.customer_plan.update({
-				where: { id: planId },
+				where: { customer_id: customerId },
 				data: {
 					plan_type: plan_type[newPlanData.plan_type],
 					account_limit: newPlanData.account_limit,
@@ -63,6 +73,30 @@ export class CustomerPlanRepository {
 					spent_limit: newPlanData.spend_limit,
 					updated_at: new Date(Date.now()),
 				},
+			});
+
+			return result;
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	async deleteCustomerPlan(prismaService: PrismaService, customerId: string) {
+		try {
+			const result = await prismaService.customer_plan.deleteMany({
+				where: { customer_id: parseInt(customerId) },
+			});
+
+			return result;
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	async deletePlan(prismaService: PrismaService, planId: string) {
+		try {
+			const result = await prismaService.customer_plan.delete({
+				where: { id: parseInt(planId) },
 			});
 
 			return result;

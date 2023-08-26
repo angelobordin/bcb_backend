@@ -2,7 +2,7 @@ import { IsNotEmpty, MaxLength } from "class-validator";
 
 export class UpdateCustomerPlanParamsDto {
 	@IsNotEmpty()
-	id: string;
+	customer_id: string;
 }
 
 export class UpdateCustomerPlanDto {

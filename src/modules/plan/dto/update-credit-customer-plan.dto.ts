@@ -1,9 +1,7 @@
 import { IsNotEmpty, MaxLength } from "class-validator";
+import { IdParam } from "src/util/model/id-param.dto";
 
-export class UpdateCreditParamsDto {
-	@IsNotEmpty()
-	id: string;
-}
+export class UpdateCreditParamsDto extends IdParam {}
 
 export class UpdateCreditDto {
 	@IsNotEmpty()

@@ -2,7 +2,6 @@ import { Injectable } from "@nestjs/common";
 import { CreateCustomerPlanDto } from "../dto/create-customer-plan.dto";
 import { PrismaService } from "src/database/prisma.service";
 import { CustomerPlanRepository } from "../repository/customer-plan.repository";
-import { GetCustomerPlanDto } from "../dto/get-customer-plan.dto";
 import { UpdateCustomerPlanDto } from "../dto/update-customer-plan.dto";
 
 @Injectable()
@@ -11,6 +10,20 @@ export class CustomerPlanService {
 		private prismaService: PrismaService,
 		private repository: CustomerPlanRepository,
 	) {}
+
+	async getPlanList() {
+		try {
+			const result = await this.repository.getPlanList(this.prismaService);
+
+			return {
+				status: 200,
+				message: "",
+				data: result,
+			};
+		} catch (error) {
+			throw error;
+		}
+	}
 
 	async getPlanByCustomerId(customerId: number) {
 		try {
@@ -46,7 +59,7 @@ export class CustomerPlanService {
 
 			return {
 				stataus: 200,
-				message: "Credit do plano atualizado com sucesso!",
+				message: "Credito do plano atualizado com sucesso!",
 				data: result,
 			};
 		} catch (error) {
@@ -54,13 +67,41 @@ export class CustomerPlanService {
 		}
 	}
 
-	async updateCustomerPlan(planId: number, newPlanData: UpdateCustomerPlanDto) {
+	async updatePlanByCustomerId(customerId: number, newPlanData: UpdateCustomerPlanDto) {
 		try {
-			const result = await this.repository.updateCustomerPlan(this.prismaService, planId, newPlanData);
+			const result = await this.repository.updatePlanByCustomerId(this.prismaService, customerId, newPlanData);
 
 			return {
 				status: 200,
 				message: "Plano do cliente atualizado com sucesso",
+				data: result,
+			};
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	async deletelanByCustomerId(customerId: string) {
+		try {
+			const result = await this.repository.deleteCustomerPlan(this.prismaService, customerId);
+
+			return {
+				status: 200,
+				message: "Plano deletado com sucesso!",
+				data: result,
+			};
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	async deletePlan(planId: string) {
+		try {
+			const result = await this.repository.deletePlan(this.prismaService, planId);
+
+			return {
+				status: 200,
+				message: "Plano deletado com sucesso!",
 				data: result,
 			};
 		} catch (error) {
