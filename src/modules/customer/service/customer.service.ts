@@ -15,7 +15,7 @@ export class CustomerService {
 		private _messageService: CustomerMessageService,
 	) {}
 
-	async getCustomerById(customerId: string) {
+	async getCustomerById(customerId: number) {
 		try {
 			const result = await this.repository.getCustomerById(this.prismaService, customerId);
 
@@ -43,7 +43,7 @@ export class CustomerService {
 		}
 	}
 
-	async updateCustomer(customerId: string, newData: UpdateCustomerDto) {
+	async updateCustomer(customerId: number, newData: UpdateCustomerDto) {
 		try {
 			const result = await this.repository.updateCustomer(this.prismaService, customerId, newData);
 
@@ -71,7 +71,7 @@ export class CustomerService {
 		}
 	}
 
-	async deleteCustomer(customerId: string) {
+	async deleteCustomer(customerId: number) {
 		try {
 			const planDeleted = await this._planSerivce.deletelanByCustomerId(customerId);
 			if (!planDeleted.data || planDeleted.status !== 200) throw new Error(`Erro ao deletar plano do cliente`);

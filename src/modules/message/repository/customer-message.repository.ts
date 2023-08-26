@@ -20,7 +20,7 @@ export class CustomerMessageRepository {
 			const result = await prismaService.customer_message.create({
 				data: {
 					text: newMessage.text,
-					value: newMessage.value,
+					value: parseFloat(newMessage.value.toString()).toFixed(2),
 					customer: { connect: { id: newMessage.customer_id } },
 					updated_at: new Date(Date.now()),
 					created_at: new Date(Date.now()),

@@ -12,7 +12,7 @@ export class CustomerController {
 	@Get(":id")
 	async getCustomerById(@Param() params: GetCustomerByIdParamDto) {
 		try {
-			const customerId = params.id;
+			const customerId = parseInt(params.id);
 			const result = await this.service.getCustomerById(customerId);
 
 			return result;
@@ -35,7 +35,7 @@ export class CustomerController {
 	@Put(":id")
 	async updateCustomer(@Param() params: UpdateCustomerParamsDto, @Body() body: UpdateCustomerDto) {
 		try {
-			const customerId = params.id;
+			const customerId = parseInt(params.id);
 			const newData = body;
 			const result = await this.service.updateCustomer(customerId, newData);
 
@@ -60,7 +60,7 @@ export class CustomerController {
 	@Delete(":id")
 	async deleteCustomer(@Param() params: DeleteCustomerParamDto) {
 		try {
-			const customerId = params.id;
+			const customerId = parseInt(params.id);
 			const result = await this.service.deleteCustomer(customerId);
 
 			return result;

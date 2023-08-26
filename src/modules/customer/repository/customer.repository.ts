@@ -5,10 +5,10 @@ import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class CustomerRepository {
-	async getCustomerById(prismaService: PrismaService, customerId: string) {
+	async getCustomerById(prismaService: PrismaService, customerId: number) {
 		try {
 			const result = await prismaService.customer.findFirst({
-				where: { id: parseInt(customerId) },
+				where: { id: customerId },
 			});
 
 			return result;
@@ -27,10 +27,10 @@ export class CustomerRepository {
 		}
 	}
 
-	async updateCustomer(prismaService: PrismaService, customerId: string, newData: UpdateCustomerDto) {
+	async updateCustomer(prismaService: PrismaService, customerId: number, newData: UpdateCustomerDto) {
 		try {
 			const result = await prismaService.customer.update({
-				where: { id: parseInt(customerId) },
+				where: { id: customerId },
 				data: {
 					...newData,
 					updated_at: new Date(Date.now()),
@@ -55,10 +55,10 @@ export class CustomerRepository {
 		}
 	}
 
-	async deleteCustomer(prismaService: PrismaService, customerId: string) {
+	async deleteCustomer(prismaService: PrismaService, customerId: number) {
 		try {
 			const result = await prismaService.customer.deleteMany({
-				where: { id: parseInt(customerId) },
+				where: { id: customerId },
 			});
 
 			return result;
