@@ -96,14 +96,15 @@ export class CustomerMessageService {
 
 			// const userNumber = this.userApi.numbers.filter((n) => n.cellphone === messageInfos.user_number && n.whatsapp)[0];
 
-			// let result = { status: 200, message: "", data: [] };
 			// switch (plan.plan_type) {
 			// 	case PLAN_TYPE.POSTPAID:
-			// 		// const balance = plan.account_limit - plan.spent_limit;
-			// 		// if () {
-
-			// 		// }
-
+			// 		const balance = plan.account_limit - plan.spent_limit;
+			// 		if (balance < message.value) {
+			// 			throw new CreditError(`Cliente não possui crédito para envio de mensagens!`);
+			// 		} else {
+			//			// Realiza rotina de envio de mensagem ao número;
+			// 		}
+			//
 			// 		break;
 			// 	case PLAN_TYPE.PREPAID:
 			// 		if (plan.credit >= message.value) {
@@ -116,7 +117,7 @@ export class CustomerMessageService {
 			// 		break;
 			// }
 
-			return "";
+			return { status: 200, message: "Mensagem enviada com sucesso!", data: [] };
 		} catch (error) {
 			throw error;
 		}
