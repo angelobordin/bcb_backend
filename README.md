@@ -1,11 +1,12 @@
-<h1>Desafio_Backend_green</h1>
+<h1>BigChatBrasil Backend</h1>
 
 <h2>Descrição</h2>
-Projeto de uma api para um aplicativo para controle de boletos de inquilinos.br>
+Projeto backend para um app de envio de mensagens.<br>
 
 <h2>Funcionalidades & endpoints</h2>
 <h3>Implementadas :heavy_check_mark:</h3>
 
+**Mensagens**
 - `Envio de mensagem`:
   - Método: **POST**
   - Endpoint: `/message/send`.
@@ -22,6 +23,8 @@ Projeto de uma api para um aplicativo para controle de boletos de inquilinos.br>
   - Método: **GET**
   - Endpoint: `/message`.
 </br>
+
+**Plano**
 - `Exclusão de plano do cliente`:
   - Método: **DELETE**
   - Endpoint ` /plan/:id`.
@@ -41,6 +44,8 @@ Projeto de uma api para um aplicativo para controle de boletos de inquilinos.br>
   - Método: **PATCH**
   - Endpoint: `/plan/credit/:id`.
 </br>
+
+**Cliente**
 - `Exclusão de cliente`:
   - Método: **DELETE**
   - Endpoint: `/customer/:id`.
