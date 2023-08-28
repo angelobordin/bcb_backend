@@ -11,7 +11,6 @@ export class CustomerMessageService {
 	constructor(
 		private prismaService: PrismaService,
 		private repository: CustomerMessageRepository,
-		private customerService: CustomerService,
 	) {}
 
 	async getMessageList() {
@@ -86,8 +85,8 @@ export class CustomerMessageService {
 
 	async sendMessage(messageInfos: SendMessageDto) {
 		try {
-			const customer = (await this.customerService.getCustomerById(messageInfos.customer_id)).data;
-			if (!customer) throw new Error(`Cliente não encontrado!`);
+			// const customer = (await this.customerService.getCustomerById(messageInfos.customer_id)).data;
+			// if (!customer) throw new Error(`Cliente não encontrado!`);
 
 			// const plan = (await this.planService.getPlan(messageInfos.plan_id)).data;
 			// if (!plan) throw new Error(`Plano do cliente não encontrado!`);
