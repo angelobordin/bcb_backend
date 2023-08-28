@@ -5,10 +5,22 @@ import { GetCustomerPlanDto } from "../dto/get-customer-plan.dto";
 import { UpdateCustomerPlanParamsDto, UpdateCustomerPlanDto } from "../dto/update-customer-plan.dto";
 import { UpdateCreditDto, UpdateCreditParamsDto } from "../dto/update-credit-customer-plan.dto";
 import { DeletePlanParamDto } from "../dto/delete-plan.dto";
+import { IdParam } from "src/util/model/id-param.dto";
 
 @Controller("/plan")
 export class CustomerPlanController {
 	constructor(private service: CustomerPlanService) {}
+
+	@Get(":id")
+	async getPlan(@Param() params: IdParam) {
+		try {
+			const result = await this.service.getPlan(parseInt(params.id));
+
+			return result;
+		} catch (error) {
+			return error;
+		}
+	}
 
 	@Get()
 	async getPlanList() {
@@ -58,12 +70,12 @@ export class CustomerPlanController {
 		}
 	}
 
-	@Put(":customer_id")
-	async updatePlanByCustomerId(@Body() body: UpdateCustomerPlanDto, @Param() params: UpdateCustomerPlanParamsDto) {
+	@Put(":id")
+	async updatePlan(@Body() body: UpdateCustomerPlanDto, @Param() params: UpdateCustomerPlanParamsDto) {
 		try {
-			const customerId = parseInt(params.customer_id);
+			const planId = parseInt(params.id);
 			const newPlanData = body;
-			const result = await this.service.updatePlanByCustomerId(customerId, newPlanData);
+			const result = await this.service.updatePlan(planId, newPlanData);
 
 			return result;
 		} catch (error) {

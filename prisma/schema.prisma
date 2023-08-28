@@ -23,7 +23,7 @@ model customer {
 
 model customer_plan {
   id            Int       @id @default(autoincrement())
-  customer_id   Int       @unique
+  customer_id   Int
   plan_type     plan_type
   credit        Decimal?  @db.Decimal(10, 2)
   spent_limit   Decimal?  @db.Decimal(10, 2)

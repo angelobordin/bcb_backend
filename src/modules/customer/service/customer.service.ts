@@ -4,14 +4,14 @@ import { UpdateCustomerDto } from "../dto/update-customer.dto";
 import { CustomerRepository } from "../repository/customer.repository";
 import { PrismaService } from "./../../../database/prisma.service";
 import { Injectable } from "@nestjs/common";
-import { CustomerMessageService } from "src/modules/message/service/custoemer-message.service";
+import { CustomerMessageService } from "src/modules/message/service/customer-message.service";
 
 @Injectable()
 export class CustomerService {
 	constructor(
 		private prismaService: PrismaService,
 		private repository: CustomerRepository,
-		private _planSerivce: CustomerPlanService,
+		private _planService: CustomerPlanService,
 		private _messageService: CustomerMessageService,
 	) {}
 
@@ -59,6 +59,7 @@ export class CustomerService {
 
 	async registerCustomer(newCustomer: CreateCustomerDto) {
 		try {
+			console.log(newCustomer);
 			const result = await this.repository.registerCustomer(this.prismaService, newCustomer);
 
 			return {
@@ -73,7 +74,7 @@ export class CustomerService {
 
 	async deleteCustomer(customerId: number) {
 		try {
-			const planDeleted = await this._planSerivce.deletelanByCustomerId(customerId);
+			const planDeleted = await this._planService.deletePlanByCustomerId(customerId);
 			if (!planDeleted.data || planDeleted.status !== 200) throw new Error(`Erro ao deletar plano do cliente`);
 
 			const messageDeleted = await this._messageService.deleteMessagesByCustomerId(customerId);

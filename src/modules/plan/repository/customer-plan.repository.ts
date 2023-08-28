@@ -1,15 +1,34 @@
-import { GetCustomerPlanDto } from "./../dto/get-customer-plan.dto";
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/database/prisma.service";
 import { CreateCustomerPlanDto } from "../dto/create-customer-plan.dto";
-import { customer_plan, plan_type } from "@prisma/client";
+import { plan_type } from "@prisma/client";
 import { UpdateCustomerPlanDto } from "../dto/update-customer-plan.dto";
 
 @Injectable()
 export class CustomerPlanRepository {
+	async getPlan(prismaService: PrismaService, planId: number) {
+		try {
+			const result = await prismaService.customer_plan.findFirst({
+				where: { id: planId },
+			});
+
+			return result;
+		} catch (error) {
+			throw error;
+		}
+	}
+
 	async getPlanList(prismaService: PrismaService) {
 		try {
-			const result = await prismaService.customer_plan.findMany();
+			const result = await prismaService.customer_plan.findMany({
+				include: {
+					customer: {
+						select: {
+							cnpj: true,
+						},
+					},
+				},
+			});
 
 			return result;
 		} catch (error) {
@@ -19,7 +38,7 @@ export class CustomerPlanRepository {
 
 	async getPlanByCustomerId(prismaService: PrismaService, customerId: number) {
 		try {
-			const result = await prismaService.customer_plan.findFirst({
+			const result = await prismaService.customer_plan.findMany({
 				where: { customer_id: customerId },
 			});
 
@@ -35,9 +54,15 @@ export class CustomerPlanRepository {
 				data: {
 					customer: { connect: { id: newPlan.customer_id } },
 					plan_type: plan_type[newPlan.plan_type.toUpperCase()],
-					credit: newPlan.credit,
-					spent_limit: newPlan.spend_limit,
+					credit: parseFloat((newPlan.credit / Math.pow(10, 2)).toFixed(2)),
 					account_limit: newPlan.account_limit,
+				},
+				include: {
+					customer: {
+						select: {
+							cnpj: true,
+						},
+					},
 				},
 			});
 
@@ -54,6 +79,13 @@ export class CustomerPlanRepository {
 				data: {
 					credit: { increment: newCredit },
 				},
+				include: {
+					customer: {
+						select: {
+							cnpj: true,
+						},
+					},
+				},
 			});
 
 			return result;
@@ -62,16 +94,23 @@ export class CustomerPlanRepository {
 		}
 	}
 
-	async updatePlanByCustomerId(prismaService: PrismaService, customerId: number, newPlanData: UpdateCustomerPlanDto) {
+	async updatePlan(prismaService: PrismaService, planId: number, newPlanData: UpdateCustomerPlanDto) {
 		try {
 			const result = await prismaService.customer_plan.update({
-				where: { customer_id: customerId },
+				where: { id: planId },
 				data: {
 					plan_type: plan_type[newPlanData.plan_type],
-					account_limit: newPlanData.account_limit,
-					credit: newPlanData.credit,
-					spent_limit: newPlanData.spend_limit,
+					account_limit: parseFloat((newPlanData.account_limit / Math.pow(10, 2)).toFixed(2)),
+					credit: parseFloat((newPlanData.credit / Math.pow(10, 2)).toFixed(2)),
+					spent_limit: parseFloat((newPlanData.spent_limit / Math.pow(10, 2)).toFixed(2)),
 					updated_at: new Date(Date.now()),
+				},
+				include: {
+					customer: {
+						select: {
+							cnpj: true,
+						},
+					},
 				},
 			});
 
@@ -95,7 +134,7 @@ export class CustomerPlanRepository {
 
 	async deletePlan(prismaService: PrismaService, planId: number) {
 		try {
-			const result = await prismaService.customer_plan.delete({
+			const result = await prismaService.customer_plan.deleteMany({
 				where: { id: planId },
 			});
 

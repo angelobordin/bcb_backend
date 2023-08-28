@@ -1,9 +1,7 @@
 import { IsNotEmpty, MaxLength } from "class-validator";
+import { IdParam } from "src/util/model/id-param.dto";
 
-export class UpdateCustomerPlanParamsDto {
-	@IsNotEmpty()
-	customer_id: string;
-}
+export class UpdateCustomerPlanParamsDto extends IdParam {}
 
 export class UpdateCustomerPlanDto {
 	@IsNotEmpty()
@@ -19,7 +17,7 @@ export class UpdateCustomerPlanDto {
 	credit: number;
 
 	@MaxLength(10)
-	spend_limit: number;
+	spent_limit: number;
 
 	@MaxLength(10)
 	account_limit: number;

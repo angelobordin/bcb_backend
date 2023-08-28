@@ -1,0 +1,4 @@
+export enum PLAN_TYPE {
+	PREPAID = "PREPAID",
+	POSTPAID = "POSTPAID",
+}

@@ -1,15 +1,17 @@
 import { Injectable } from "@nestjs/common";
-import { throwIfEmpty } from "rxjs";
 import { PrismaService } from "src/database/prisma.service";
 import { CustomerMessageRepository } from "../repository/customer-message.repository";
 import { RegisterMessageDto } from "../dto/register-message.dto";
 import { UpdateMessageDto } from "../dto/update-message.dto";
+import { SendMessageDto } from "../dto/send-message.dto";
+import { CustomerService } from "src/modules/customer/service/customer.service";
 
 @Injectable()
 export class CustomerMessageService {
 	constructor(
 		private prismaService: PrismaService,
 		private repository: CustomerMessageRepository,
+		private customerService: CustomerService,
 	) {}
 
 	async getMessageList() {
@@ -77,6 +79,45 @@ export class CustomerMessageService {
 				message: "Mensagem deletada com sucesso!",
 				data: result,
 			};
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	async sendMessage(messageInfos: SendMessageDto) {
+		try {
+			const customer = (await this.customerService.getCustomerById(messageInfos.customer_id)).data;
+			if (!customer) throw new Error(`Cliente não encontrado!`);
+
+			// const plan = (await this.planService.getPlan(messageInfos.plan_id)).data;
+			// if (!plan) throw new Error(`Plano do cliente não encontrado!`);
+
+			// const message = await this.repository.getMessage(this.prismaService, messageInfos.message_id);
+			// if (!message) throw new Error(`Mensagem não encontrado!`);
+
+			// const userNumber = this.userApi.numbers.filter((n) => n.cellphone === messageInfos.user_number && n.whatsapp)[0];
+
+			// let result = { status: 200, message: "", data: [] };
+			// switch (plan.plan_type) {
+			// 	case PLAN_TYPE.POSTPAID:
+			// 		// const balance = plan.account_limit - plan.spent_limit;
+			// 		// if () {
+
+			// 		// }
+
+			// 		break;
+			// 	case PLAN_TYPE.PREPAID:
+			// 		if (plan.credit >= message.value) {
+			// 			result.message = "Mensagem enviada com sucesso!";
+			// 			// Realiza rotina de envio de mensagem ao número
+			// 		} else {
+			// 			throw new CreditError(`Cliente não possui crédito para envio de mensagens!`);
+			// 		}
+
+			// 		break;
+			// }
+
+			return "";
 		} catch (error) {
 			throw error;
 		}

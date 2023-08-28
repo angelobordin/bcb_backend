@@ -1,3 +1,4 @@
+import { NextFunction } from "express";
 import { Body, Controller, Post, Get, Put, Param, Delete } from "@nestjs/common";
 import { CustomerService } from "../service/customer.service";
 import { CreateCustomerDto } from "../dto/create-customer.dto";
@@ -58,14 +59,14 @@ export class CustomerController {
 	}
 
 	@Delete(":id")
-	async deleteCustomer(@Param() params: DeleteCustomerParamDto) {
+	async deleteCustomer(@Param() params: DeleteCustomerParamDto, next: NextFunction) {
 		try {
 			const customerId = parseInt(params.id);
 			const result = await this.service.deleteCustomer(customerId);
 
 			return result;
 		} catch (error) {
-			return error;
+			next(error);
 		}
 	}
 }

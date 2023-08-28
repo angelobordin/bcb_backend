@@ -11,6 +11,20 @@ export class CustomerPlanService {
 		private repository: CustomerPlanRepository,
 	) {}
 
+	async getPlan(planId: number) {
+		try {
+			const result = await this.repository.getPlan(this.prismaService, planId);
+
+			return {
+				status: 200,
+				message: "",
+				data: result,
+			};
+		} catch (error) {
+			throw error;
+		}
+	}
+
 	async getPlanList() {
 		try {
 			const result = await this.repository.getPlanList(this.prismaService);
@@ -67,9 +81,9 @@ export class CustomerPlanService {
 		}
 	}
 
-	async updatePlanByCustomerId(customerId: number, newPlanData: UpdateCustomerPlanDto) {
+	async updatePlan(planId: number, newPlanData: UpdateCustomerPlanDto) {
 		try {
-			const result = await this.repository.updatePlanByCustomerId(this.prismaService, customerId, newPlanData);
+			const result = await this.repository.updatePlan(this.prismaService, planId, newPlanData);
 
 			return {
 				status: 200,
@@ -81,7 +95,7 @@ export class CustomerPlanService {
 		}
 	}
 
-	async deletelanByCustomerId(customerId: number) {
+	async deletePlanByCustomerId(customerId: number) {
 		try {
 			const result = await this.repository.deleteCustomerPlan(this.prismaService, customerId);
 
